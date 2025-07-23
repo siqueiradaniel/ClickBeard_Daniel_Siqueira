@@ -3,29 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
-
-type Service = {
-    id: number
-    name: string
-    description?: string
-    duration?: number
-    price: number
-}
-
-const services: Service[] = [
-    { id: 1, name: "Corte Masculino", description: "Corte com tesoura e máquina", price: 40 },
-    { id: 2, name: "Barba", description: "Modelagem de barba", price: 30 },
-    { id: 3, name: "Corte + Barba", description: "Pacote completo", price: 60 },
-    { id: 4, name: "Sobrancelha", description: "Limpeza e alinhamento", price: 15 },
-    { id: 5, name: "Pigmentação", description: "Barba ou cabelo", price: 70 },
-    { id: 6, name: "Hidratação Capilar", description: "Hidratação profunda", price: 25 },
-    { id: 7, name: "Design de Corte", description: "Riscos e detalhes", price: 35 },
-    { id: 8, name: "Platinado", description: "Descoloração e matização", price: 100 },
-    { id: 9, name: "Corte Infantil", description: "Até 12 anos", price: 30 },
-    { id: 10, name: "Relaxamento", description: "Redução de volume", price: 55 },
-    { id: 11, name: "Alisamento", description: "Progressiva ou definitiva", price: 80 },
-    { id: 12, name: "Massagem Facial", description: "Relaxamento e cuidados", price: 20 },
-]
+import { useServices } from '@/hooks/useServices'
+import { Service } from '@/types'
 
 const ServiceCard = ({ service }: { service: Service }) => {
     const router = useRouter()
@@ -33,6 +12,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
     const handleClick = () => {
         router.push(`/schedules/${service.id}`)
     }
+
     return (
         <Card className="w-full h-full border border-neutral-800 shadow-sm bg-neutral-800 text-white flex flex-col justify-between">
             <CardHeader className="text-center">
@@ -46,7 +26,12 @@ const ServiceCard = ({ service }: { service: Service }) => {
             )}
 
             <CardContent className="mt-auto pt-2 flex justify-between items-center text-sm text-neutral-100 border-t border-neutral-700">
-                <span className="font-medium">R$ {service.price.toFixed(2)}</span>
+                <div className="flex flex-col gap-1">
+                    <span className="font-medium">R$ {service.price.toFixed(2)}</span>
+                    {service.duration && (
+                        <span className="text-xs text-neutral-400">{service.duration} min</span>
+                    )}
+                </div>
                 <Button className="mt-4" onClick={handleClick}>
                     Reservar
                 </Button>
@@ -56,11 +41,37 @@ const ServiceCard = ({ service }: { service: Service }) => {
 }
 
 const ServiceList = () => {
+    const { services, loading, error } = useServices()
+
+    if (loading) {
+        return (
+            <div className="max-w-6xl mx-auto px-4 py-8">
+                <h2 className="text-2xl font-bold text-white mb-6">Nossos Serviços</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="h-48 bg-neutral-800 rounded-lg animate-pulse" />
+                    ))}
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="max-w-6xl mx-auto px-4 py-8">
+                <div className="text-center text-red-400">
+                    <p>{error}</p>
+                    <Button className="mt-4" onClick={() => window.location.reload()}>
+                        Tentar novamente
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h2 className="text-2xl font-bold text-white mb-6">Nossos Serviços</h2>
-
-            {/* Grade com 3 colunas em telas médias */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {services.map((service) => (
                     <ServiceCard key={service.id} service={service} />

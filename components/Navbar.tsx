@@ -10,13 +10,25 @@ const Navbar = () => {
         setIsModalOpen(!isModalOpen)
     }
 
+    const handleMySchedules = () => {
+        setIsModalOpen(false)
+        // Navegar para a página de agendamentos
+        window.location.href = '/my-schedules'
+    }
+
+    const handleLogout = () => {
+        setIsModalOpen(false)
+        alert('Logout realizado com sucesso!')
+        // Implementar logout aqui
+    }
+
     return (
         <div className="w-full border-b border-neutral-800 bg-neutral-900 text-white">
             <div className="flex items-center justify-between max-w-5xl mx-auto px-4 py-3">
                 <div className="text-xl font-bold">
                     <Link href="/">
                         <img
-                            src="logo.png"
+                            src="/logo.png"
                             width={120}
                             alt="Logo do site"
                             className="cursor-pointer"
@@ -31,10 +43,16 @@ const Navbar = () => {
 
                     {isModalOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-10">
-                            <button className="block w-full px-4 py-2 text-left hover:bg-neutral-100" onClick={() => alert('Meus agendamentos')}>
+                            <button 
+                                className="block w-full px-4 py-2 text-left hover:bg-neutral-100" 
+                                onClick={handleMySchedules}
+                            >
                                 Meus Agendamentos
                             </button>
-                            <button className="block w-full px-4 py-2 text-left hover:bg-neutral-100" onClick={() => alert('Logout')}>
+                            <button 
+                                className="block w-full px-4 py-2 text-left hover:bg-neutral-100" 
+                                onClick={handleLogout}
+                            >
                                 Logout
                             </button>
                         </div>
