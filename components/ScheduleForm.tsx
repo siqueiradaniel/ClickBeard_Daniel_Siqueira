@@ -153,14 +153,14 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
     return (
         <div className="max-w-md mx-auto px-4 py-8">
             <div className="mb-4">
-                <Button
-                    variant="outline"
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2"
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    Voltar
-                </Button>
+            <Button
+                variant="outline"
+                onClick={() => router.back()}
+                className="flex items-center gap-2 text-black border-black"
+            >
+                <ArrowLeft className="w-4 h-4" />
+                Voltar
+            </Button>
             </div>
 
             <Card className="bg-neutral-800 border-neutral-700 text-white">
