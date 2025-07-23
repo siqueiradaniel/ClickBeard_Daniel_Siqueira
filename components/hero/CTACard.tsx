@@ -12,7 +12,7 @@ const CTACard = ({ title, description }: CTACardProps) => {
       <h3 className="font-bold bg-neutral-800 rounded-t-md text-white ">
         {title}
       </h3>
-      <p className="text-xs text-gray-200 pb-3">
+      <p className="text-xs text-gray-200 pb-3 px-2">
         {description}
       </p>
 

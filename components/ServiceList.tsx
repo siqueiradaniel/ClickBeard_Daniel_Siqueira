@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 
-
-// Tipagem do serviço
 type Service = {
     id: number
     name: string
@@ -14,7 +12,6 @@ type Service = {
     price: number
 }
 
-// Mock de 12 serviços
 const services: Service[] = [
     { id: 1, name: "Corte Masculino", description: "Corte com tesoura e máquina", price: 40 },
     { id: 2, name: "Barba", description: "Modelagem de barba", price: 30 },
@@ -30,9 +27,6 @@ const services: Service[] = [
     { id: 12, name: "Massagem Facial", description: "Relaxamento e cuidados", price: 20 },
 ]
 
-
-
-// Componente ServiceCard
 const ServiceCard = ({ service }: { service: Service }) => {
     const router = useRouter()
 
@@ -61,7 +55,6 @@ const ServiceCard = ({ service }: { service: Service }) => {
     )
 }
 
-// Componente principal
 const ServiceList = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
