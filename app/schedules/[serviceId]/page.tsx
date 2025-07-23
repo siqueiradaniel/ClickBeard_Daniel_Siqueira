@@ -14,8 +14,7 @@ export default function SchedulePage({ params }: PageProps) {
     return (
         <div className="min-h-screen bg-neutral-900">
             <ScheduleForm 
-                serviceId={Number(serviceId)} 
-                clientId={clientId} 
+                serviceId={Number(serviceId)}
             />
         </div>
     )

@@ -5,9 +5,13 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { useServices } from '@/hooks/useServices'
 import { Service } from '@/types'
+import { useAuth } from '@/contexts/AuthContext'
 
 const ServiceCard = ({ service }: { service: Service }) => {
     const router = useRouter()
+    const { user } = useAuth()
+
+    const isClient = user?.type === 'client' && user?.role === 'CLIENT';
 
     const handleClick = () => {
         router.push(`/schedules/${service.id}`)
@@ -32,9 +36,19 @@ const ServiceCard = ({ service }: { service: Service }) => {
                         <span className="text-xs text-neutral-400">{service.duration} min</span>
                     )}
                 </div>
-                <Button className="mt-4" onClick={handleClick}>
+                <Button
+                    className={`mt-4 ${isClient ? 'cursor-pointer' : 'cursor-default opacity-50'}`}
+                    onClick={() => {
+                        if (!isClient) return;
+                        handleClick();
+                    }}
+                    disabled={!isClient}
+                >
                     Reservar
                 </Button>
+
+
+
             </CardContent>
         </Card>
     )
