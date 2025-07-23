@@ -21,7 +21,7 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
     const { service, loading: serviceLoading } = useService(serviceId)
     const { barbers, loading: barbersLoading } = useBarbersByService(serviceId)
     const { createSchedule, loading: creating } = useCreateSchedule()
-    
+
     const [selectedBarberId, setSelectedBarberId] = useState<number | null>(null)
     const [selectedDate, setSelectedDate] = useState('')
     const [selectedTime, setSelectedTime] = useState('')
@@ -34,9 +34,21 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
         '16:00', '16:30', '17:00', '17:30'
     ]
 
+    const now = new Date();
+
+    const filteredTimes = availableTimes.filter((time) => {
+        const [hours, minutes] = time.split(':').map(Number);
+        const timeDate = new Date();
+
+        timeDate.setHours(hours, minutes, 0, 0);
+
+        return timeDate > now; // mantém apenas os horários futuros
+    });
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         if (!user) {
             alert('Você precisa estar logado para fazer um agendamento')
             router.push('/login')
@@ -57,9 +69,9 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
                 time: selectedTime,
                 status: 'SCHEDULED'
             })
-            
+
             setShowSuccess(true)
-            
+
             // Redirecionar após 3 segundos
             setTimeout(() => {
                 router.push('/my-schedules')
@@ -75,7 +87,7 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
                 <Card className="bg-neutral-800 border-neutral-700 text-white">
                     <CardContent className="text-center py-8">
                         <p className="text-lg mb-4">Você precisa estar logado para fazer um agendamento</p>
-                        <Button 
+                        <Button
                             onClick={() => router.push('/login')}
                             className="bg-blue-600 hover:bg-blue-700"
                         >
@@ -99,7 +111,7 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
         return (
             <div className="max-w-md mx-auto px-4 py-8 text-center text-red-400">
                 <p>Serviço não encontrado</p>
-                <Button 
+                <Button
                     onClick={() => router.push('/')}
                     className="mt-4"
                 >
@@ -122,7 +134,7 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
                         <p className="text-sm text-neutral-400 mb-4">
                             Você será redirecionado em alguns segundos...
                         </p>
-                        <Button 
+                        <Button
                             onClick={() => router.push('/my-schedules')}
                             className="bg-green-600 hover:bg-green-700"
                         >
@@ -200,7 +212,7 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
                                     <SelectValue placeholder="Escolha um horário" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {availableTimes.map((time) => (
+                                    {filteredTimes.map((time) => (
                                         <SelectItem key={time} value={time}>
                                             {time}
                                         </SelectItem>
@@ -212,9 +224,9 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
                             </p>
                         </div>
 
-                        <Button 
-                            type="submit" 
-                            className="w-full bg-blue-600 hover:bg-blue-700" 
+                        <Button
+                            type="submit"
+                            className="w-full bg-blue-600 hover:bg-blue-700"
                             disabled={creating}
                         >
                             {creating ? 'Agendando...' : 'Confirmar Agendamento'}
