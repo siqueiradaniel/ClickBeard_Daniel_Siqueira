@@ -7,18 +7,18 @@ export const useClients = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
-        const fetchClients = async () => {
-            try {
-                setLoading(true)
-                const data = await clientsApi.getAll()
-                setClients(data)
-            } catch (err) {
-                setError('Erro ao carregar clientes')
-            } finally {
-                setLoading(false)
-            }
+    const fetchClients = async () => {
+        try {
+            setLoading(true)
+            const data = await clientsApi.getAll()
+            setClients(data)
+        } catch (err) {
+            setError('Erro ao carregar clientes')
+        } finally {
+            setLoading(false)
         }
+    }
+    useEffect(() => {
 
         fetchClients()
     }, [])

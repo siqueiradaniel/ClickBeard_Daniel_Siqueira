@@ -7,19 +7,19 @@ export const useServices = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                setLoading(true)
-                const data = await servicesApi.getAll()
-                setServices(data)
-            } catch (err) {
-                setError('Erro ao carregar serviços')
-            } finally {
-                setLoading(false)
-            }
+    const fetchServices = async () => {
+        try {
+            setLoading(true)
+            const data = await servicesApi.getAll()
+            setServices(data)
+        } catch (err) {
+            setError('Erro ao carregar serviços')
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchServices()
     }, [])
 

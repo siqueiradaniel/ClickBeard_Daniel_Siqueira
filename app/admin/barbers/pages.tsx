@@ -3,9 +3,9 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import SchedulesList from '@/components/ScheduleList'
+import AdminBarberList from '@/components/adminBarberList'
 
-export default function AdminSchedulesPage() {
+export default function AdminBarbersPage() {
     const { user, isLoading } = useAuth()
     const router = useRouter()
 
@@ -29,7 +29,7 @@ export default function AdminSchedulesPage() {
 
     return (
         <div className="min-h-screen bg-neutral-900">
-            <SchedulesList />
+            <AdminBarberList />
         </div>
     )
 }

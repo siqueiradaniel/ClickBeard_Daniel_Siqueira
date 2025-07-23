@@ -1,5 +1,5 @@
 import React from 'react'
-import { MapPin, Phone, CheckCircle } from 'lucide-react'
+import { MapPin, Phone, CheckCircle, Clock } from 'lucide-react'
 
 const AboutUs = () => {
   return (
@@ -28,6 +28,10 @@ const AboutUs = () => {
             <Phone className="w-5 h-5 text-neutral-400" />
             <span>(11) 99999-9999</span>
           </div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-5 h-5 text-neutral-400" />
+            <span>Todos os dias: 8h às 18h</span>
+          </div>
         </div>
 
         <div className="border border-neutral-700 rounded-lg p-4 space-y-4 bg-neutral-800 text-sm">
@@ -35,6 +39,16 @@ const AboutUs = () => {
           <p className="text-neutral-300">
             Somos apaixonados por realçar a beleza e o estilo de nossos clientes. Nossa barbearia nasceu com o propósito de oferecer um atendimento de qualidade, com ambiente confortável e profissionais experientes. Cada detalhe foi pensado para tornar sua experiência única.
           </p>
+
+          <div className="bg-neutral-700 p-3 rounded-lg">
+            <p className="font-semibold mb-2 text-blue-400">Horário de funcionamento:</p>
+            <p className="text-neutral-300">
+              <strong>Todos os dias:</strong> 8:00 às 18:00
+            </p>
+            <p className="text-xs text-neutral-400 mt-1">
+              * Cada atendimento tem duração de 30 minutos
+            </p>
+          </div>
 
           <div>
             <p className="font-semibold mb-2">Para melhor atendê-los, também proporcionamos:</p>

@@ -1,5 +1,3 @@
-
-// components/ScheduleForm.tsx
 'use client'
 
 import { useState } from 'react'
@@ -10,14 +8,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useService } from '@/hooks/useServices'
 import { useBarbersByService } from '@/hooks/useBarbers'
 import { useCreateSchedule } from '@/hooks/useSchedules'
+import { useAuth } from '@/contexts/AuthContext'
+import { ArrowLeft, CheckCircle } from 'lucide-react'
 
 type ScheduleFormProps = {
     serviceId: number
-    clientId?: number
 }
 
-const ScheduleForm = ({ serviceId, clientId }: ScheduleFormProps) => {
+const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
     const router = useRouter()
+    const { user } = useAuth()
     const { service, loading: serviceLoading } = useService(serviceId)
     const { barbers, loading: barbersLoading } = useBarbersByService(serviceId)
     const { createSchedule, loading: creating } = useCreateSchedule()
@@ -25,15 +25,24 @@ const ScheduleForm = ({ serviceId, clientId }: ScheduleFormProps) => {
     const [selectedBarberId, setSelectedBarberId] = useState<number | null>(null)
     const [selectedDate, setSelectedDate] = useState('')
     const [selectedTime, setSelectedTime] = useState('')
+    const [showSuccess, setShowSuccess] = useState(false)
 
+    // Horários de funcionamento: 8h às 18h (intervalos de 30 minutos)
     const availableTimes = [
-        '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-        '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'
+        '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+        '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+        '16:00', '16:30', '17:00', '17:30'
     ]
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         
+        if (!user) {
+            alert('Você precisa estar logado para fazer um agendamento')
+            router.push('/login')
+            return
+        }
+
         if (!selectedBarberId || !selectedDate || !selectedTime) {
             alert('Preencha todos os campos')
             return
@@ -41,7 +50,7 @@ const ScheduleForm = ({ serviceId, clientId }: ScheduleFormProps) => {
 
         try {
             await createSchedule({
-                clientId,
+                clientId: user.type === 'client' ? user.id : undefined,
                 barberId: selectedBarberId,
                 serviceId,
                 date: new Date(selectedDate),
@@ -49,11 +58,33 @@ const ScheduleForm = ({ serviceId, clientId }: ScheduleFormProps) => {
                 status: 'SCHEDULED'
             })
             
-            alert('Agendamento realizado com sucesso!')
-            router.push('/my-schedules')
+            setShowSuccess(true)
+            
+            // Redirecionar após 3 segundos
+            setTimeout(() => {
+                router.push('/my-schedules')
+            }, 3000)
         } catch (error) {
             alert('Erro ao criar agendamento')
         }
+    }
+
+    if (!user) {
+        return (
+            <div className="max-w-md mx-auto px-4 py-8">
+                <Card className="bg-neutral-800 border-neutral-700 text-white">
+                    <CardContent className="text-center py-8">
+                        <p className="text-lg mb-4">Você precisa estar logado para fazer um agendamento</p>
+                        <Button 
+                            onClick={() => router.push('/login')}
+                            className="bg-blue-600 hover:bg-blue-700"
+                        >
+                            Fazer Login
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
+        )
     }
 
     if (serviceLoading || barbersLoading) {
@@ -68,17 +99,62 @@ const ScheduleForm = ({ serviceId, clientId }: ScheduleFormProps) => {
         return (
             <div className="max-w-md mx-auto px-4 py-8 text-center text-red-400">
                 <p>Serviço não encontrado</p>
+                <Button 
+                    onClick={() => router.push('/')}
+                    className="mt-4"
+                >
+                    Voltar ao início
+                </Button>
+            </div>
+        )
+    }
+
+    if (showSuccess) {
+        return (
+            <div className="max-w-md mx-auto px-4 py-8">
+                <Card className="bg-neutral-800 border-neutral-700 text-white">
+                    <CardContent className="text-center py-8">
+                        <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold mb-2">Agendamento Confirmado!</h3>
+                        <p className="text-neutral-300 mb-4">
+                            Seu agendamento foi realizado com sucesso.
+                        </p>
+                        <p className="text-sm text-neutral-400 mb-4">
+                            Você será redirecionado em alguns segundos...
+                        </p>
+                        <Button 
+                            onClick={() => router.push('/my-schedules')}
+                            className="bg-green-600 hover:bg-green-700"
+                        >
+                            Ver Meus Agendamentos
+                        </Button>
+                    </CardContent>
+                </Card>
             </div>
         )
     }
 
     return (
         <div className="max-w-md mx-auto px-4 py-8">
+            <div className="mb-4">
+                <Button
+                    variant="outline"
+                    onClick={() => router.back()}
+                    className="flex items-center gap-2"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                    Voltar
+                </Button>
+            </div>
+
             <Card className="bg-neutral-800 border-neutral-700 text-white">
                 <CardHeader>
                     <CardTitle>Agendar: {service.name}</CardTitle>
                     <p className="text-sm text-neutral-400">
                         R$ {service.price.toFixed(2)} • {service.duration} min
+                    </p>
+                    <p className="text-xs text-neutral-500">
+                        Cliente: {user.name}
                     </p>
                 </CardHeader>
                 <CardContent>
@@ -131,11 +207,14 @@ const ScheduleForm = ({ serviceId, clientId }: ScheduleFormProps) => {
                                     ))}
                                 </SelectContent>
                             </Select>
+                            <p className="text-xs text-neutral-400 mt-1">
+                                Funcionamento: 8:00 às 18:00 (todos os dias)
+                            </p>
                         </div>
 
                         <Button 
                             type="submit" 
-                            className="w-full" 
+                            className="w-full bg-blue-600 hover:bg-blue-700" 
                             disabled={creating}
                         >
                             {creating ? 'Agendando...' : 'Confirmar Agendamento'}

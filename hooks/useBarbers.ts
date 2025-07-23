@@ -7,23 +7,24 @@ export const useBarbers = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
-        const fetchBarbers = async () => {
-            try {
-                setLoading(true)
-                const data = await barbersApi.getAll()
-                setBarbers(data)
-            } catch (err) {
-                setError('Erro ao carregar barbeiros')
-            } finally {
-                setLoading(false)
-            }
+    const fetchBarbers = async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const data = await barbersApi.getAll()
+            setBarbers(data)
+        } catch (err) {
+            setError('Erro ao carregar barbeiros')
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchBarbers()
     }, [])
 
-    return { barbers, loading, error, refetch: () => fetchBarbers() }
+    return { barbers, loading, error, refetch: fetchBarbers }
 }
 
 export const useActiveBarbers = () => {
@@ -31,23 +32,24 @@ export const useActiveBarbers = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
-        const fetchBarbers = async () => {
-            try {
-                setLoading(true)
-                const data = await barbersApi.getActive()
-                setBarbers(data)
-            } catch (err) {
-                setError('Erro ao carregar barbeiros ativos')
-            } finally {
-                setLoading(false)
-            }
+    const fetchBarbers = async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const data = await barbersApi.getActive()
+            setBarbers(data)
+        } catch (err) {
+            setError('Erro ao carregar barbeiros ativos')
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchBarbers()
     }, [])
 
-    return { barbers, loading, error }
+    return { barbers, loading, error, refetch: fetchBarbers }
 }
 
 export const useBarber = (id: number) => {
@@ -81,23 +83,24 @@ export const useBarbersWithServices = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
-        const fetchBarbers = async () => {
-            try {
-                setLoading(true)
-                const data = await barbersApi.getWithServices()
-                setBarbers(data)
-            } catch (err) {
-                setError('Erro ao carregar barbeiros com serviços')
-            } finally {
-                setLoading(false)
-            }
+    const fetchBarbers = async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const data = await barbersApi.getWithServices()
+            setBarbers(data)
+        } catch (err) {
+            setError('Erro ao carregar barbeiros com serviços')
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchBarbers()
     }, [])
 
-    return { barbers, loading, error }
+    return { barbers, loading, error, refetch: fetchBarbers }
 }
 
 export const useBarbersByService = (serviceId: number) => {
