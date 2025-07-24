@@ -26,10 +26,23 @@ export const clientsApi = {
 
     create: async (clientData: Omit<Client, 'id'>): Promise<Client> => {
         await delay(600)
-        const newClient = {
-            ...clientData,
-            id: Math.max(...clientsData.map(c => c.id)) + 1
+
+        // Verificar se o email já existe (usar === para comparação estrita)
+        const existingClient = clientsData.find(client => client.email === clientData.email)
+        if (existingClient) {
+            throw new Error('O e-mail informado já está em uso. Por favor, utilize outro e-mail.')
         }
+
+        // Gerar novo ID de forma segura
+        const newId = clientsData.length > 0
+            ? Math.max(...clientsData.map(c => c.id)) + 1
+            : 1
+            
+        const newClient: Client = {
+            ...clientData,
+            id: newId
+        }
+
         clientsData.push(newClient)
         return newClient
     }
