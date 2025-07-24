@@ -7,12 +7,13 @@ const CTA = [
     description: "Aqui você tem acesso a um processo de agendamento simples e eficiente, permitindo que você reserve seu horário com facilidade."
   },
   {
-    title: "Barbearias de elite",
-    description: "Explore uma seleção das melhores barbearias parceiras. Encontre ambientes profissionais e qualificados para cuidar do seu visual.",
+    title: "Sua barbearia de confiança",
+    description: "Atendimento profissional e ambiente acolhedor para valorizar o seu estilo com qualidade e atenção aos detalhes."
+
   },
   {
-    title: "Explorando estilos",
-    description: "A QUICK BARBER oferece uma ampla gama de barbearias parceiras que você possa explorar e encontrar o estilo que mais combina com você.",
+    title: "Seu estilo, nossa especialidade",
+    description: "Na QUICK BARBER, cada cliente encontra um visual que combina com sua personalidade e estilo de vida."
   }
 ]
 
@@ -20,7 +21,7 @@ const Hero = () => {
   return (
     <section>
       <div>
-        <img 
+        <img
           src='bannerHome.png' />
       </div>
       <div className="flex flex-col items-center max-w-5xl w-full px-4 mx-auto">
@@ -29,9 +30,8 @@ const Hero = () => {
             Sua jornada de estilo começa aqui
           </h1>
           <p className="text-xs font-light dark:text-white/70 md:text-sm">
-            Descubra a praticidade da QUICK BARBER, a plataforma de agendamento
-            online que simplifica todo o processo de reserva de horários em
-            barbearias.
+            Descubra a praticidade da QUICK BARBER, uma barbearia com agendamento
+            online que simplifica a sua experiência na hora de marcar um horário.
           </p>
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 space-x-4 mx-4 my-4'>

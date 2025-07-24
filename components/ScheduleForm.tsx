@@ -69,7 +69,7 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
                 clientId: user.type === 'client' ? user.id : undefined,
                 barberId: selectedBarberId,
                 serviceId,
-                date: new Date(selectedDate),
+                date: new Date(selectedDate + 'T12:00:00'),
                 time: selectedTime,
                 status: 'SCHEDULED'
             })

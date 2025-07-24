@@ -7,7 +7,7 @@
 
 ## 📋 Sobre o Projeto
 
-O **ClickBeard** é um sistema completo de agendamento para barbearias, desenvolvido para facilitar o gerenciamento de horários, barbeiros, serviços e clientes. O sistema permite que clientes façam agendamentos online e que administradores tenham controle total sobre a operação da barbearia.
+O **ClickBeard** é um sistema completo de agendamento para uma barbearia, desenvolvido para facilitar o gerenciamento de horários, barbeiros, serviços e clientes. O sistema permite que clientes façam agendamentos online e que administradores tenham controle total sobre a operação da barbearia.
 
 ## 🚀 Tecnologias Utilizadas
 

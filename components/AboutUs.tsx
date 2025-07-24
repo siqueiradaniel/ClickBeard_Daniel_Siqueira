@@ -16,7 +16,7 @@ const AboutUs = () => {
       <div className="flex flex-col gap-6 flex-1">
 
         <h2 className="text-2xl font-bold text-neutral-100">
-          O glow up que você merece
+          Transforme seu visual
         </h2>
 
         <div className="flex flex-col gap-2 text-sm text-neutral-300">
