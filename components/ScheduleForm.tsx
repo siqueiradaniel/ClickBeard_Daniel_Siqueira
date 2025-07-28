@@ -36,14 +36,18 @@ const ScheduleForm = ({ serviceId }: ScheduleFormProps) => {
 
     const now = new Date();
 
+    const isToday = selectedDate === new Date().toISOString().split('T')[0]
+
     const filteredTimes = availableTimes.filter((time) => {
-        const [hours, minutes] = time.split(':').map(Number);
-        const timeDate = new Date();
+        if (!isToday) return true
 
-        timeDate.setHours(hours, minutes, 0, 0);
+        const [hours, minutes] = time.split(':').map(Number)
+        const selectedTime = new Date()
 
-        return timeDate > now; // mantém apenas os horários futuros
-    });
+        selectedTime.setHours(hours, minutes, 0, 0)
+
+        return selectedTime > now
+    })
 
 
     const handleSubmit = async (e: React.FormEvent) => {
