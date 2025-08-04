@@ -19,6 +19,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <head>
+        {/* PWA tags */}
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icon.png" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="ClickBeard" />
+        <link rel="apple-touch-icon" href="/icon.png" />
+      </head>
       <body className={`${inter.className} bg-neutral-900`}>
         <AuthProvider>
           <Navbar />
